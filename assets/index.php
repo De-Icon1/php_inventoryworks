@@ -26,53 +26,15 @@
         if($rs)
             {//if its sucessfull
 
-                if($doc_dept=='Records'){
+                if($doc_dept=='Administrator'){
                     log_action($doc_id,"LOGIN");
-                    header("location:record_dashboard.php");
+                    header("location:admin_dashboard.php");
                     }
-                    else if($doc_dept=='Nursing')
-                    {
-                        log_action($doc_id,"LOGIN");
-                        header("location:nursing_dashboard.php");
-
+                else if($doc_dept=='Transport'){
+                    log_action($doc_id,"LOGIN");
+                    header("location:transport_dashboard.php");
                     }
-                    else if($doc_dept=='Administrator')
-                    {
-                        log_action($doc_id,"LOGIN");
-                        header("location:admin_dashboard.php");
-
-                    }
-                    else if($doc_dept=='Cashier')
-                    {
-                        log_action($doc_id,"LOGIN");
-                        header("location:cashier_dashboard.php");
-
-                    }
-                    else if($doc_dept=='Pharmacy')
-                    {
-                        log_action($doc_id,"LOGIN");
-                        header("location:pharmacy_dashboard.php");
-
-                    }
-                         else if($doc_dept=='Scan')
-                    {
-                        log_action($doc_id,"LOGIN");
-                        header("location:scan_dashboard.php");
-
-                    }
-                    else if($doc_dept=='Laboratory')
-                    {
-                        log_action($doc_id,"LOGIN");
-                        header("location:Lab_dashboard.php");
-
-                    }
-                    else if($doc_dept=='Doctor')
-                    {
-                        log_action($doc_id,"LOGIN");
-                        header("location:doc/doctor_dashboard.php");
-
-                    }
-                    else if($doc_dept=='Vice Chancellor')
+                else if($doc_dept=='Vice Chancellor')
                     {
                         log_action($doc_id,"LOGIN");
                         header("location:vc_dashboard.php");
@@ -154,28 +116,29 @@ function storeopeningstock($date,$mysqli){
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/custom-auth.css" rel="stylesheet" type="text/css" />
         <!--Load Sweet Alert Javascript-->
         
         <script src="assets/js/swal.js"></script>
         <!--Inject SWAL-->
-        <?php if(isset($success)) {?>
+        <?php if(!empty($success)) {?>
         <!--This code for injecting an alert-->
                 <script>
                             setTimeout(function () 
                             { 
-                                swal("Success","<?php echo $success;?>","success");
+                                swal("Success", <?php echo json_encode($success); ?>, "success");
                             },
                                 100);
                 </script>
 
         <?php } ?>
 
-        <?php if(isset($err)) {?>
+        <?php if(!empty($err)) {?>
         <!--This code for injecting an alert-->
                 <script>
                             setTimeout(function () 
                             { 
-                                swal("Failed","<?php echo $err;?>","Failed");
+                                swal("Failed", <?php echo json_encode($err); ?>, "error");
                             },
                                 100);
                 </script>

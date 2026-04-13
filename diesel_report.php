@@ -9,9 +9,12 @@ $sql = "SELECT source_type, SUM(quantity) AS total_qty FROM diesel_log GROUP BY 
 $res = $mysqli->query($sql);
 ?>
 <?php include("assets/inc/head.php"); ?>
-<body><?php include("assets/inc/nav.php"); ?>
+<body>
+<?php include("assets/inc/nav.php"); ?>
+<?php include("assets/inc/sidebar_admin.php"); ?>
 
-<div class="container mt-4">
+<div class="content-page">
+<div class="content container">
   <h3>Diesel Usage Report</h3>
   <div class="card-box">
     <div class="table-responsive">
@@ -23,6 +26,8 @@ $res = $mysqli->query($sql);
       </table>
     </div>
   </div>
+</div>
+<?php include("assets/inc/footer.php"); ?>
 </div>
 </body>
 </html>

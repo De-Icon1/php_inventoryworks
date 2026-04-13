@@ -35,16 +35,19 @@ for($i = 11; $i >= 0; $i--){
 <?php include("assets/inc/head.php"); ?>
 <body><?php include("assets/inc/nav.php"); ?>
 <div class="container mt-4">
+<?php include("assets/inc/sidebar_admin.php"); ?>
+<div class="content-page">
+<div class="content container">
   <h3>Usage Charts</h3>
 
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-12 col-lg-6 mb-3">
       <div class="card-box">
         <h5>Items Issued (last 12 months)</h5>
         <canvas id="issuedChart" height="200"></canvas>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-12 col-lg-6 mb-3">
       <div class="card-box">
         <h5>Diesel Consumption (last 12 months)</h5>
         <canvas id="dieselChart" height="200"></canvas>
@@ -52,8 +55,12 @@ for($i = 11; $i >= 0; $i--){
     </div>
   </div>
 </div>
+</div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<?php include("assets/inc/footer.php"); ?>
+
+</body>
+</html>
 <script>
 const labels = <?= json_encode($labels) ?>;
 const issued = <?= json_encode($issued_data) ?>;

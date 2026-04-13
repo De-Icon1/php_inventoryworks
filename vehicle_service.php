@@ -12,7 +12,7 @@ if(isset($_POST['add_service'])){
     $next = $_POST['next_service_date'] ?: null;
     $odo = $_POST['odometer'] ?: null;
     $notes = trim($_POST['notes']);
-    $by = $_SESSION['doc_number'];
+    $by = $_SESSION['username'] ?? 'Unknown';
 
     $stmt = $mysqli->prepare("INSERT INTO service_records (vehicle_id, service_type, service_date, next_service_date, odometer, notes, performed_by) VALUES (?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("isssiss", $vehicle_id, $stype, $sdate, $next, $odo, $notes, $by);
@@ -22,9 +22,12 @@ if(isset($_POST['add_service'])){
 }
 ?>
 <?php include("assets/inc/head.php"); ?>
-<body><?php include("assets/inc/nav.php"); ?>
+<body>
+<?php include("assets/inc/nav.php"); ?>
+<?php include("assets/inc/sidebar_admin.php"); ?>
 
-<div class="container mt-4">
+<div class="content-page">
+<div class="content container">
   <h3>Vehicle Service Tracker</h3>
   <?php if($success) echo "<div class='alert alert-success'>$success</div>"; ?>
   <?php if($err) echo "<div class='alert alert-danger'>$err</div>"; ?>
@@ -32,26 +35,26 @@ if(isset($_POST['add_service'])){
   <div class="card-box">
     <form method="POST">
       <div class="form-row">
-        <div class="form-group col-md-4">
+        <div class="form-group col-12 col-md-4">
           <label>Vehicle</label>
           <select name="vehicle_id" class="form-control">
             <?php $res = $mysqli->query("SELECT vehicle_id, vehicle_number FROM vehicles ORDER BY vehicle_number"); while($r = $res->fetch_assoc()) echo "<option value='{$r['vehicle_id']}'>".htmlentities($r['vehicle_number'])."</option>"; ?>
           </select>
         </div>
-        <div class="form-group col-md-4">
+        <div class="form-group col-12 col-md-4">
           <label>Service Type</label>
           <input name="service_type" class="form-control" required>
         </div>
-        <div class="form-group col-md-4">
+        <div class="form-group col-12 col-md-4">
           <label>Service Date</label>
           <input type="date" name="service_date" class="form-control" required>
         </div>
       </div>
 
       <div class="form-row">
-        <div class="form-group col-md-4"><label>Next Service</label><input type="date" name="next_service_date" class="form-control"></div>
-        <div class="form-group col-md-4"><label>Odometer</label><input type="number" name="odometer" class="form-control"></div>
-        <div class="form-group col-md-4"><label>Performed By</label><input name="performed_by" class="form-control" value="<?= htmlentities($_SESSION['doc_number']) ?>"></div>
+        <div class="form-group col-12 col-md-4"><label>Next Service</label><input type="date" name="next_service_date" class="form-control"></div>
+        <div class="form-group col-12 col-md-4"><label>Odometer</label><input type="number" name="odometer" class="form-control"></div>
+        <div class="form-group col-12 col-md-4"><label>Performed By</label><input name="performed_by" class="form-control" value="<?= htmlentities($_SESSION['username'] ?? 'Unknown') ?>" readonly></div>
       </div>
 
       <div class="form-group"><label>Notes</label><textarea name="notes" class="form-control"></textarea></div>
@@ -78,5 +81,9 @@ if(isset($_POST['add_service'])){
     </div>
   </div>
 </div>
+</div>
+
+<?php include("assets/inc/footer.php"); ?>
+
 </body>
 </html>

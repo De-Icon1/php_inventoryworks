@@ -12,7 +12,9 @@ $rows = $res->fetch_all(MYSQLI_ASSOC);
 // optionally mark notified when needed (not automatic here)
 ?>
 <?php include("assets/inc/head.php"); ?>
-<body><?php include("assets/inc/nav.php"); ?>
+<body>
+<?php include("assets/inc/nav.php"); ?>
+<?php include("assets/inc/sidebar_admin.php"); ?>
 
 <div class="container mt-4">
   <h3>Low Stock Alerts</h3>

@@ -24,25 +24,113 @@
        <!--Load Sweet Alert Javascript-->
        <script src="assets/js/swal.js"></script>
        
+        <!-- Fix navbar alignment to top and prevent overlap with forms -->
+        <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+            }
+            
+            body {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .navbar-custom {
+                order: -1;
+                width: 100%;
+                padding: 10px 15px;
+                background-color: #000;
+                border-bottom: 1px solid #333;
+                flex-shrink: 0;
+            }
+            
+            .container, .container-fluid {
+                margin-top: 20px;
+                padding-top: 0;
+            }
+            
+            /* Responsive improvements */
+            @media (max-width: 768px) {
+                .content-page {
+                    margin-left: 0 !important;
+                    padding: 10px;
+                }
+                
+                .card-box {
+                    padding: 15px;
+                    margin-bottom: 15px;
+                }
+                
+                .table-responsive {
+                    overflow-x: auto;
+                    -webkit-overflow-scrolling: touch;
+                }
+                
+                .form-group {
+                    margin-bottom: 15px;
+                }
+                
+                .btn {
+                    display: block;
+                    width: 100%;
+                    margin-bottom: 10px;
+                }
+                
+                .btn-group .btn {
+                    display: inline-block;
+                    width: auto;
+                }
+                
+                h4, h5 {
+                    font-size: 1.2rem;
+                }
+                
+                .left-side-menu {
+                    margin-left: -240px;
+                    transition: margin-left 0.3s;
+                }
+                
+                .sidebar-enable .left-side-menu {
+                    margin-left: 0;
+                }
+            }
+            
+            @media (max-width: 576px) {
+                .card-box {
+                    padding: 10px;
+                }
+                
+                .table {
+                    font-size: 0.85rem;
+                }
+                
+                .btn-sm {
+                    font-size: 0.75rem;
+                    padding: 0.25rem 0.5rem;
+                }
+            }
+        </style>
+       
         <!--Inject SWAL-->
-        <?php if(isset($success)) {?>
+        <?php if(!empty($success)) {?>
         <!--This code for injecting an alert-->
                 <script>
                             setTimeout(function () 
                             { 
-                                swal("Success","<?php echo $success;?>","success");
+                                swal("Success", <?php echo json_encode($success); ?>, "success");
                             },
                                 100);
                 </script>
 
         <?php } ?>
 
-        <?php if(isset($err)) {?>
+        <?php if(!empty($err)) {?>
         <!--This code for injecting an alert-->
                 <script>
                             setTimeout(function () 
                             { 
-                                swal("Failed","<?php echo $err;?>","Failed");
+                                swal("Failed", <?php echo json_encode($err); ?>, "error");
                             },
                                 100);
                 </script>
@@ -50,3 +138,67 @@
         <?php } ?>
 
 </head>
+<script>
+// Sidebar active/focus fixer: runs shortly after page load to ensure
+// the correct submenu is expanded based on the current URL or stored link.
+document.addEventListener('DOMContentLoaded', function(){
+    setTimeout(function(){
+        try{
+            var current = window.location.href.split(/[?#]/)[0];
+            var anchors = document.querySelectorAll('#side-menu a[href]');
+            var matched = null;
+            anchors.forEach(function(a){
+                try{
+                    var href = a.href.split(/[?#]/)[0];
+                    if(href === current || current.endsWith('/' + a.getAttribute('href'))){
+                        matched = a;
+                    }
+                }catch(e){}
+            });
+
+            // fallback to stored href (set on click) if no direct match
+            if(!matched && window.localStorage){
+                var stored = localStorage.getItem('activeSidebarHref');
+                if(stored){
+                    anchors.forEach(function(a){ if(a.getAttribute('href') === stored) matched = a; });
+                }
+            }
+
+            if(matched){
+                // clear previous active states
+                document.querySelectorAll('#side-menu .active').forEach(function(el){ el.classList.remove('active'); });
+                document.querySelectorAll('#side-menu .in').forEach(function(el){ el.classList.remove('in'); });
+
+                // activate the matching anchor and expand its parents using the menu toggler
+                // prefer triggering the menu's own toggler so metisMenu handles classes correctly
+                matched.classList.add('active');
+                var li = matched.parentElement;
+                if(li) li.classList.add('active');
+
+                // If inside a nested ul, find the toggler anchor and trigger it
+                var parentUl = matched.closest('ul.nav-second-level');
+                if(parentUl){
+                    var parentLi = parentUl.parentElement; // the li that contains the toggler anchor
+                    if(parentLi) parentLi.classList.add('active');
+                    var toggler = parentLi ? parentLi.getElementsByTagName('a')[0] : null;
+                    if(toggler){
+                        // If the submenu is not already visible, trigger the toggler click
+                        if(!parentUl.classList.contains('in')){
+                            try{ toggler.click(); } catch(e) { /* ignore */ }
+                        }
+                        // ensure the clicked anchor is highlighted
+                        matched.classList.add('active');
+                    }
+                }
+            }
+
+            // save clicks so next page can expand the right menu immediately
+            document.querySelectorAll('#side-menu a[href]').forEach(function(a){
+                a.addEventListener('click', function(){
+                    try{ if(window.localStorage) localStorage.setItem('activeSidebarHref', a.getAttribute('href')); }catch(e){}
+                });
+            });
+        }catch(e){console.error('sidebar-fix error', e);}    
+    }, 250);
+});
+</script>

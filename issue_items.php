@@ -5,6 +5,8 @@ include('assets/inc/checklogins.php');
 check_login();
 
 $err = $success = '';
+$excluded_item = 0;
+$excluded_unit = 0;
 
 if(isset($_POST['issue'])){
     $item = (int)$_POST['item_id'];
@@ -50,6 +52,9 @@ if(isset($_POST['issue'])){
 
             $mysqli->commit();
             $success = "Issued successfully.";
+            // exclude the just-submitted item/unit from the dropdown on this render
+            $excluded_item = $item;
+            $excluded_unit = $unit;
         } catch(Exception $e){
             $mysqli->rollback();
             $err = "Error issuing: " . $e->getMessage();
@@ -60,8 +65,10 @@ if(isset($_POST['issue'])){
 <?php include("assets/inc/head.php"); ?>
 <body>
 <?php include("assets/inc/nav.php"); ?>
+<?php include("assets/inc/sidebar_admin.php"); ?>
 
-<div class="container mt-4">
+<div class="content-page">
+<div class="content container">
   <h3>Issue Items</h3>
   <?php if($success) echo "<div class='alert alert-success'>$success</div>"; ?>
   <?php if($err) echo "<div class='alert alert-danger'>$err</div>"; ?>
@@ -72,10 +79,12 @@ if(isset($_POST['issue'])){
         <div class="form-group col-md-5">
           <label>Item</label>
           <select name="item_id" class="form-control" required>
+            <option value="">Select Item</option>
             <?php
             $res = $mysqli->query("SELECT item_id, item_name FROM items ORDER BY item_name");
             while($r = $res->fetch_assoc()){
-              echo "<option value='{$r['item_id']}'>".htmlentities($r['item_name'])."</option>";
+              if($excluded_item && $r['item_id'] == $excluded_item) continue;
+              echo "<option value='". $r['item_id'] ."'>".htmlentities($r['item_name'])."</option>";
             }
             ?>
           </select>
@@ -84,10 +93,12 @@ if(isset($_POST['issue'])){
         <div class="form-group col-md-4">
           <label>Issue To (Unit)</label>
           <select name="unit_id" class="form-control" required>
+            <option value="">Select Unit</option>
             <?php
             $res = $mysqli->query("SELECT unit_id, unit_name FROM units ORDER BY unit_name");
             while($r = $res->fetch_assoc()){
-              echo "<option value='{$r['unit_id']}'>".htmlentities($r['unit_name'])."</option>";
+              if($excluded_unit && $r['unit_id'] == $excluded_unit) continue;
+              echo "<option value='". $r['unit_id'] ."'>".htmlentities($r['unit_name'])."</option>";
             }
             ?>
           </select>
@@ -133,5 +144,9 @@ if(isset($_POST['issue'])){
   </div>
 
 </div>
+</div>
+
+<?php include("assets/inc/footer.php"); ?>
+
 </body>
 </html>

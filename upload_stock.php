@@ -55,9 +55,12 @@ if(isset($_POST['upload'])){
 }
 ?>
 <?php include("assets/inc/head.php"); ?>
-<body><?php include("assets/inc/nav.php"); ?>
+<body>
+<?php include("assets/inc/nav.php"); ?>
+<?php include("assets/inc/sidebar_admin.php"); ?>
 
-<div class="container mt-4">
+<div class="content-page">
+<div class="content container">
   <h3>Upload Stock (CSV)</h3>
   <?php if($success) echo "<div class='alert alert-success'>$success</div>"; ?>
   <?php if($err) echo "<div class='alert alert-danger'>$err</div>"; ?>
@@ -71,6 +74,10 @@ if(isset($_POST['upload'])){
     </form>
     <p class="mt-2"><small>CSV format: <code>item_name,quantity</code></small></p>
   </div>
-</div>
+  </div>
+  </div>
+
+<?php include("assets/inc/footer.php"); ?>
+
 </body>
 </html>

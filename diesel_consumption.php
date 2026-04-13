@@ -20,9 +20,12 @@ if(isset($_POST['log'])){
 }
 ?>
 <?php include("assets/inc/head.php"); ?>
-<body><?php include("assets/inc/nav.php"); ?>
+<body>
+<?php include("assets/inc/nav.php"); ?>
+<?php include("assets/inc/sidebar_admin.php"); ?>
 
-<div class="container mt-4">
+<div class="content-page">
+<div class="content container">
   <h3>Diesel Consumption Log</h3>
   <?php if($success) echo "<div class='alert alert-success'>$success</div>"; ?>
   <?php if($err) echo "<div class='alert alert-danger'>$err</div>"; ?>
@@ -56,5 +59,9 @@ if(isset($_POST['log'])){
     </div>
   </div>
 </div>
+</div>
+
+<?php include("assets/inc/footer.php"); ?>
+
 </body>
 </html>

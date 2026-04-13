@@ -18,9 +18,11 @@ $full_name = $_SESSION['full_name'] ?? '';
 <html lang="en">
     
     <!--Head Code-->
-    <?php include("assets/inc/head.php");?>
 
-    <body>
+<?php include("assets/inc/head.php"); ?>
+<body>
+<?php include("assets/inc/nav.php"); ?>
+<?php include("assets/inc/sidebar_admin.php"); ?>
 
         <!-- Begin page -->
         <div id="wrapper">
@@ -66,7 +68,7 @@ $full_name = $_SESSION['full_name'] ?? '';
                         $res = $mysqli->query("SELECT COALESCE(SUM(quantity),0) AS total_stock FROM stock_balance");
                         if($res){
                             $r = $res->fetch_assoc();
-                            $total_stock = $r['total_stock'];
+                            $total_stock = (int)$r['total_stock'];
                         }
 
                         // Total issued quantity
@@ -74,7 +76,7 @@ $full_name = $_SESSION['full_name'] ?? '';
                         $res = $mysqli->query("SELECT COALESCE(SUM(quantity),0) AS total_issued FROM stock_issues");
                         if($res){
                             $r = $res->fetch_assoc();
-                            $total_issued = $r['total_issued'];
+                            $total_issued = (int)$r['total_issued'];
                         }
 
                         // Tyres count (items in Tyres category)
@@ -105,7 +107,7 @@ $full_name = $_SESSION['full_name'] ?? '';
                         // Diesel total
                         $diesel_total = 0;
                         $res = $mysqli->query("SELECT COALESCE(SUM(quantity),0) AS total FROM diesel_log");
-                        if($res){ $r = $res->fetch_assoc(); $diesel_total = $r['total']; }
+                        if($res){ $r = $res->fetch_assoc(); $diesel_total = (int)$r['total']; }
 
                         // Service count
                         $service_count = 0;
@@ -115,7 +117,7 @@ $full_name = $_SESSION['full_name'] ?? '';
 
                         <div class="row">
                             <!-- Inventory: Store Items -->
-                            <div class="col-md-6 col-xl-4">
+                            <div class="col-12 col-md-6 col-xl-4 mb-3">
                                 <div class="widget-rounded-circle card-box">
                                     <div class="row">
                                         <div class="col-6">
@@ -135,7 +137,7 @@ $full_name = $_SESSION['full_name'] ?? '';
                             </div>
 
                             <!-- Inventory: Total Stock -->
-                            <div class="col-md-6 col-xl-4">
+                            <div class="col-12 col-md-6 col-xl-4 mb-3">
                                 <div class="widget-rounded-circle card-box">
                                     <div class="row">
                                         <div class="col-6">
@@ -145,7 +147,7 @@ $full_name = $_SESSION['full_name'] ?? '';
                                         </div>
                                         <div class="col-6">
                                             <div class="text-right">
-                                                <h3 class="text-dark mt-1"><span data-plugin="counterup"><?php echo htmlspecialchars($total_stock);?></span></h3>
+                                                <h3 class="text-dark mt-1"><span data-plugin="counterup"><?php echo (int)$total_stock;?></span></h3>
                                                 <p class="text-muted mb-1 text-truncate">Total Stock (Units)</p>
                                                 <small class="text-muted">Sum of all stock quantities</small>
                                             </div>
@@ -155,7 +157,7 @@ $full_name = $_SESSION['full_name'] ?? '';
                             </div>
 
                             <!-- Inventory: Total Issued -->
-                            <div class="col-md-6 col-xl-4">
+                            <div class="col-12 col-md-6 col-xl-4 mb-3">
                                 <div class="widget-rounded-circle card-box">
                                     <div class="row">
                                         <div class="col-6">
@@ -165,7 +167,7 @@ $full_name = $_SESSION['full_name'] ?? '';
                                         </div>
                                         <div class="col-6">
                                             <div class="text-right">
-                                                <h3 class="text-dark mt-1"><span data-plugin="counterup"><?php echo htmlspecialchars($total_issued);?></span></h3>
+                                                <h3 class="text-dark mt-1"><span data-plugin="counterup"><?php echo (int)$total_issued;?></span></h3>
                                                 <p class="text-muted mb-1 text-truncate">Total Issued</p>
                                                 <small class="text-muted">Distributed to units</small>
                                             </div>
@@ -175,7 +177,7 @@ $full_name = $_SESSION['full_name'] ?? '';
                             </div>
 
                             <!-- Inventory: Tyres -->
-                            <div class="col-md-6 col-xl-4">
+                            <div class="col-12 col-md-6 col-xl-4 mb-3">
                                 <div class="widget-rounded-circle card-box">
                                     <div class="row">
                                         <div class="col-6">
@@ -195,7 +197,7 @@ $full_name = $_SESSION['full_name'] ?? '';
                             </div>
 
                             <!-- Inventory: Diesel Logs -->
-                            <div class="col-md-6 col-xl-4">
+                            <div class="col-12 col-md-6 col-xl-4 mb-3">
                                 <div class="widget-rounded-circle card-box">
                                     <div class="row">
                                         <div class="col-6">
@@ -205,7 +207,7 @@ $full_name = $_SESSION['full_name'] ?? '';
                                         </div>
                                         <div class="col-6">
                                             <div class="text-right">
-                                                <h3 class="text-dark mt-1"><span data-plugin="counterup"><?php echo htmlspecialchars($diesel_total);?></span></h3>
+                                                <h3 class="text-dark mt-1"><span data-plugin="counterup"><?php echo (int)$diesel_total;?></span></h3>
                                                 <p class="text-muted mb-1 text-truncate">Diesel (Litres)</p>
                                                 <small class="text-muted">Logged consumption</small>
                                             </div>
@@ -215,7 +217,7 @@ $full_name = $_SESSION['full_name'] ?? '';
                             </div>
 
                             <!-- Inventory: Vehicle Service -->
-                            <div class="col-md-6 col-xl-4">
+                            <div class="col-12 col-md-6 col-xl-4 mb-3">
                                 <div class="widget-rounded-circle card-box">
                                     <div class="row">
                                         <div class="col-6">

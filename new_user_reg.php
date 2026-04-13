@@ -43,8 +43,11 @@
 ?>
 <!DOCTYPE html>
     <html lang="en">
-        <?php include('assets/inc/head.php');?>
-    <body>
+
+<?php include("assets/inc/head.php"); ?>
+<body>
+<?php include("assets/inc/nav.php"); ?>
+<?php include("assets/inc/sidebar_admin.php"); ?>
 
         <!-- Begin page -->
         <div id="wrapper">
@@ -131,19 +134,19 @@
                                             <form method="post" enctype="multipart/form-data">
                                                     <h5 class="mb-4 text-uppercase"><i class="mdi mdi-account-circle mr-1"></i> User Authentication</h5>
                                                     <div class="row">
-                                                        <div class="col-md-3">
+                                                        <div class="col-12 col-md-3">
                                                             <div class="form-group">
                                                                 <label for="firstname">Staff ID</label>
                                                                 <input type="text" name="staff_code"  class="form-control" id="firstname" placeholder="Enter Staff ID">
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-4">
+                                                        <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <label for="firstname">Surname</label>
                                                                 <input type="text" name="surn"  class="form-control" id="firstname" placeholder="Enter User Surname">
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-5">
+                                                        <div class="col-12 col-md-5">
                                                             <div class="form-group">
                                                                 <label for="lastname">Other Names</label>
                                                                 <input type="text" name="fname" class="form-control" id="lastname" placeholder="Other Names">
@@ -151,7 +154,7 @@
                                                         </div> <!-- end col -->
                                                     </div> <!-- end row -->
                                                      <div class="row">
-                                                        <div class="col-md-4">
+                                                        <div class="col-12 col-md-4">
                                                     <label for="inputState">Authorized Department</label>
                                                     <select id="inputState" required="required" name="dept" class="form-control">
                                                         <option>Choose</option>
@@ -166,13 +169,13 @@
                                                         <option value="Records">Records Section</option>
                                                     </select>
                                                 </div>
-                                                        <div class="col-md-4">
+                                                        <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <label for="lastname">New Password</label>
                                                                 <input type="password" class="form-control" name="pwd" id="lastname" placeholder="Enter New Password">
                                                             </div>
                                                         </div> 
-                                                        <div class="col-md-4">
+                                                        <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <label for="lastname">Confirm Password</label>
                                                                 <input type="password" class="form-control" name="rpwd" id="lastname" placeholder="Enter New Password">
@@ -182,13 +185,13 @@
                                                     </div> <!-- end row -->
                                                     <div class="row">
                                                     
-                                                        <div class="col-md-6">
+                                                        <div class="col-12 col-md-6">
                                                             <div class="form-group">
                                                                 <label for="useremail">Email Address</label>
                                                                 <input type="email" name="email" class="form-control" id="useremail" placeholder="<?php echo $row->doc_email;?>">
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-6">
+                                                        <div class="col-12 col-md-6">
                                                             <div class="form-group">
                                                                 <label for="useremail">Profile Picture</label>
                                                                 <input type="file" name="pics" class="form-control btn btn-success" id="useremail" >

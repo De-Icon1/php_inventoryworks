@@ -1,0 +1,17 @@
+/* Override authentication background to use OOU logo as subtle background */
+body.authentication-bg-pattern {
+  background-image: url('../images/OOU.png') !important;
+  background-repeat: no-repeat !important;
+  background-position: center top !important;
+  background-size: 260px auto !important;
+  background-color: #f7f7f7 !important;
+}
+
+/* Add a subtle overlay so the card is readable */
+.account-pages:before{
+  content: '';
+  position: fixed;
+  left: 0; right: 0; top: 0; bottom: 0;
+  background: rgba(255,255,255,0.35);
+  pointer-events: none;
+}

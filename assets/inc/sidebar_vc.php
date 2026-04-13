@@ -11,53 +11,44 @@
 
                             <li>
                                 <a href="vc_dashboard.php">
-                                    <img src="./assets/img/home.png"></i>
+                                    <i class="fas fa-home"></i>
                                     <span> Dashboard </span>
                                 </a>
-                                
                             </li>
 
-                           <li>
+                            <li>
                                 <a href="javascript: void(0);">
-                                   
-
-                              <li>
-                                <a href="javascript: void(0);">
-                                    <img src="./assets/img/Modify.png"></i>
-                                    <span> Medical Reports </span>
+                                    <i class="fas fa-chart-bar"></i>
+                                    <span> Reports </span>
                                     <span class="menu-arrow"></span>
                                 </a>
                                 <ul class="nav-second-level" aria-expanded="false">
- 
                                     <li>
-                                        <a href="#">Total Registered Patient</a>
-                                    </li>
-                                     <li>
-                                        <a href="">Current Admitted Patient</a>
-                                    </li>
-                                     <li>
-                                        <a href="visitdate.php">Todays Visit Report</a>
-                                    </li>
-                                     <li>
-                                        <a href="storeview_report.php">Drug Movement Report</a>
-                                    </li>
-                                     
-                                    <li>
-                                        <a href="dailystock.php">Daily Stock Report</a>
+                                        <a href="inventory_report.php">Stock Balance Report</a>
                                     </li>
                                     <li>
-                                        <a href="">Pharmacy Sales Report</a>
+                                        <a href="diesel_report.php">Diesel Usage Report</a>
                                     </li>
-                                    
+                                    <li>
+                                        <a href="inventory_history.php">Inventory History</a>
+                                    </li>
+                                    <li>
+                                        <a href="low_stock_alerts.php">Low Stock Alerts</a>
+                                    </li>
+                                    <li>
+                                        <a href="inventory_charts.php">Usage Charts</a>
+                                    </li>
+                                    <li>
+                                        <a href="vehicle_history.php">Vehicle Service History</a>
+                                    </li>
                                 </ul>
                             </li>
 
                             <li>
-                                <a href="record_logout.php">
-                                    <img src="./assets/img/exit.png"></i>
-                                    <span> Logout Portal </span>
+                                <a href="logout.php">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span> Logout </span>
                                 </a>
-
                             </li>
                         </ul>
 

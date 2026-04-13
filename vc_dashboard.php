@@ -2,24 +2,36 @@
   session_start();
   include('assets/inc/config.php');
   include('assets/inc/checklogins.php');
-  check_login();
-  authorize();
-  $aid=$_SESSION['doc_id'];
-   $doc_number = $_SESSION['doc_number'];
+  
+  if(!check_login()){
+    header("Location: index.php");
+    exit();
+  }
+  
+    if(!authorize(['vc'])){
+        header("Location: index.php");
+        exit();
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
     
     <!--Head Code-->
-    <?php include("assets/inc/head.php");?>
 
-    <body>
+<?php
+// When including shared nav/layout, tell it to point logo here
+// and show reports-only (hide admin/operations links) for VC users.
+$override_dashboard_link = 'vc_dashboard.php';
+$show_reports_only = true;
+include("assets/inc/head.php");
+?>
+<body>
 
         <!-- Begin page -->
         <div id="wrapper">
 
             <!-- Topbar Start -->
-            <?php include('assets/inc/nav_r.php');?>
+            <?php include("assets/inc/nav.php"); ?>
             <!-- end Topbar -->
 
             <!-- ========== Left Sidebar Start ========== -->
@@ -41,279 +53,138 @@
                             <div class="col-12">
                                 <div class="page-title-box">
                                     
-                                    <h4 class="page-title">OOU Hospital Management System Dashboard</h4>
+                                    <h4 class="page-title">Inventory Management System - Vice Chancellor Dashboard</h4>
                                 </div>
                             </div>
                         </div>     
                         <!-- end page title --> 
                         
-
+                        <!-- Reports Section -->
                         <div class="row">
-                            <!--Start OutPatients-->
-                            <div class="col-md-6 col-xl-4">
-                                <div class="widget-rounded-circle card-box">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="avatar-lg rounded-circle bg-soft-primary border-primary border">
-                                                <i class="fab fa-accessible-icon  font-22 avatar-title text-primary"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="text-right">
-                                                <?php
-                                                    //code for summing up number of out patients 
-                                                    $result ="SELECT count(*) FROM individual";
-                                                    $stmt = $mysqli->prepare($result);
-                                                    $stmt->execute();
-                                                    $stmt->bind_result($outpatient);
-                                                    $stmt->fetch();
-                                                    $stmt->close();
-                                                ?>
-                                                <h3 class="text-dark mt-1"><span data-plugin="counterup"><?php echo $outpatient;?></span></h3>
-                                                <p class="text-muted mb-1 text-truncate">Registered Cards </p>
-                                            </div>
-                                        </div>
-                                    </div> <!-- end row-->
-                                </div> <!-- end widget-rounded-circle-->
-                            </div> <!-- end col-->
-                            <!--End Out Patients-->
-
-
-                            <!--Start InPatients-->
-                            <div class="col-md-6 col-xl-4">
-                                <div class="widget-rounded-circle card-box">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="avatar-lg rounded-circle bg-soft-primary border-primary border">
-                                                 <i class="fab fa-accessible-icon  font-22 avatar-title text-primary"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="text-right">
-                                                <?php
-                                                    //code for summing up number of in / admitted  patients 
-                                                    $result ="SELECT count(*) FROM family_individual";
-                                                    $stmt = $mysqli->prepare($result);
-                                                    $stmt->execute();
-                                                    $stmt->bind_result($inpatient);
-                                                    $stmt->fetch();
-                                                    $stmt->close();
-                                                ?>
-                                                <h3 class="text-dark mt-1"><span data-plugin="counterup"><?php echo $inpatient;?></span></h3>
-                                                <p class="text-muted mb-1 text-truncate">Total Lab Tests</p>
-                                            </div>
-                                        </div>
-                                    </div> <!-- end row-->
-                                </div> <!-- end widget-rounded-circle-->
-                            </div> <!-- end col-->
-                            <!--End InPatients-->
-
-                            <!--Start Employees-->
-                            <div class="col-md-6 col-xl-4">
-                                <div class="widget-rounded-circle card-box">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="avatar-lg rounded-circle bg-soft-primary border-primary border">
-                                                 <i class="fab fa-accessible-icon  font-22 avatar-title text-primary"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="text-right">
-                                                <?php
-                                                    //code for summing up number of employees in the certain Hospital 
-                                                    $result ="SELECT count(*) FROM student ";
-                                                    $stmt = $mysqli->prepare($result);
-                                                    $stmt->execute();
-                                                    $stmt->bind_result($doc);
-                                                    $stmt->fetch();
-                                                    $stmt->close();
-                                                ?>
-                                                <h3 class="text-dark mt-1"><span data-plugin="counterup"><?php echo $doc;?></span></h3>
-                                                <p class="text-muted mb-1 text-truncate">Total Scan Tests</p>
-                                            </div>
-                                        </div>
-                                    </div> <!-- end row-->
-                                </div> <!-- end widget-rounded-circle-->
-                            </div> <!-- end col-->
-                            <!--End Employees-->
-
-
-
-                            <!--Start OutPatients-->
-                            <div class="col-md-6 col-xl-4">
-                                <div class="widget-rounded-circle card-box">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="avatar-lg rounded-circle bg-soft-primary border-primary border">
-                                                <i class="fab fa-accessible-icon  font-22 avatar-title text-primary"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="text-right">
-                                                <?php
-                                                    //code for summing up number of out patients 
-                                                    $result ="SELECT count(*) FROM his_patients WHERE pat_type = 'OutPatient' ";
-                                                    $stmt = $mysqli->prepare($result);
-                                                    $stmt->execute();
-                                                    $stmt->bind_result($outpatient);
-                                                    $stmt->fetch();
-                                                    $stmt->close();
-                                                ?>
-                                                <h3 class="text-dark mt-1"><span data-plugin="counterup"><?php echo $outpatient;?></span></h3>
-                                                <p class="text-muted mb-1 text-truncate">Total Procedures</p>
-                                            </div>
-                                        </div>
-                                    </div> <!-- end row-->
-                                </div> <!-- end widget-rounded-circle-->
-                            </div> <!-- end col-->
-                            <!--End Out Patients-->
-
-
-                            <!--Start InPatients-->
-                            <div class="col-md-6 col-xl-4">
-                                <div class="widget-rounded-circle card-box">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="avatar-lg rounded-circle bg-soft-primary border-primary border">
-                                                <i class="fab fa-accessible-icon  font-22 avatar-title text-primary"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="text-right">
-                                                <?php
-                                                    //code for summing up number of in / admitted  patients 
-                                                    $result ="SELECT count(*) FROM staff ";
-                                                    $stmt = $mysqli->prepare($result);
-                                                    $stmt->execute();
-                                                    $stmt->bind_result($inpatient);
-                                                    $stmt->fetch();
-                                                    $stmt->close();
-                                                ?>
-                                                <h3 class="text-dark mt-1"><span data-plugin="counterup"><?php echo $inpatient;?></span></h3>
-                                                <p class="text-muted mb-1 text-truncate">Total Diagnosis</p>
-                                            </div>
-                                        </div>
-                                    </div> <!-- end row-->
-                                </div> <!-- end widget-rounded-circle-->
-                            </div> <!-- end col-->
-                            <!--End InPatients-->
-
-                            <!--Start Employees-->
-                            <div class="col-md-6 col-xl-4">
-                                <div class="widget-rounded-circle card-box">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="avatar-lg rounded-circle bg-soft-primary border-primary border">
-                                                 <i class="fab fas fa-user-tag  font-22 avatar-title text-primary"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="text-right">
-                                                <?php
-                                                    //code for summing up number of employees in the certain Hospital 
-                                                $rdate=date('Y-m-d');
-                                                    $result ="SELECT count(*) FROM sendsignal where Date='$rdate'";
-                                                    $stmt = $mysqli->prepare($result);
-                                                    $stmt->execute();
-                                                    $stmt->bind_result($doc);
-                                                    $stmt->fetch();
-                                                    $stmt->close();
-                                                ?>
-                                                <h3 class="text-dark mt-1"><span data-plugin="counterup"><?php echo $doc;?></span></h3>
-                                                <p class="text-muted mb-1 text-truncate">Registered Staff</p>
-                                            </div>
-                                        </div>
-                                    </div> <!-- end row-->
-                                </div> <!-- end widget-rounded-circle-->
-                            </div> <!-- end col-->
-                            <!--End Employees-->
-
-
-
-                            
-                        
-                        </div>
-
-                        <div class="row">
-
-                        
-
-                            
-
-                            
-
-                        </div>
-                        
-                        </div>
-
-                        <div class="row">
-
-                        
-
-                            
-
-                            
-
-                        </div>
-                        
-
-                        
-                        <!--Recently Employed Employees-->
-                        <div class="row">
-                            <div class="col-xl-12">
+                            <div class="col-12">
                                 <div class="card-box">
-                                    <h4 class="header-title mb-3">Hospital Record Staff</h4>
+                                    <h4 class="header-title mb-3"><i class="fas fa-chart-bar"></i> Inventory Reports</h4>
+                                    <p class="text-muted">Access comprehensive reports for inventory management and vehicle operations</p>
+                                    
+                                    <div class="row">
+                                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                            <div class="card bg-primary text-white">
+                                                <div class="card-body">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="flex-shrink-0 mr-3">
+                                                            <i class="fas fa-boxes font-32"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">
+                                                            <h5 class="text-white mb-1">Stock Balance Report</h5>
+                                                            <p class="mb-2" style="opacity: 0.9;">View current stock levels, low stock alerts, and inventory valuation</p>
+                                                            <a href="inventory_report.php" class="btn btn-light btn-sm">
+                                                                <i class="fas fa-eye"></i> View Report
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                    <div class="table-responsive">
-                                        <table class="table table-borderless table-hover table-centered m-0">
+                                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                            <div class="card bg-success text-white">
+                                                <div class="card-body">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="flex-shrink-0 mr-3">
+                                                            <i class="fas fa-gas-pump font-32"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">
+                                                            <h5 class="text-white mb-1">Diesel Usage Report</h5>
+                                                            <p class="mb-2" style="opacity: 0.9;">Track diesel consumption by source type and vehicle</p>
+                                                            <a href="diesel_report.php" class="btn btn-light btn-sm">
+                                                                <i class="fas fa-eye"></i> View Report
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                            <thead class="thead-light">
-                                                <tr>
-                                                    <th colspan="2">Picture</th>
-                                                    <th>Name</th>
-                                                    <th>Email</th>
-                                                    <th>Department</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <?php
-                                                $ret="SELECT * FROM his_docs where doc_dept='Records' ORDER BY RAND() LIMIT 10 "; 
-                                                //sql code to get to ten docs  randomly
-                                                $stmt= $mysqli->prepare($ret) ;
-                                                $stmt->execute() ;//ok
-                                                $res=$stmt->get_result();
-                                                $cnt=1;
-                                                while($row=$res->fetch_object())
-                                                {
-                                            ?>
-                                            <tbody>
-                                                <tr>
-                                                    <td style="width: 36px;">
-                                                        <img src="../doc/assets/images/users/<?php echo $row->doc_dpic;?>" alt="img" title="contact-img" class="rounded-circle avatar-sm" />
-                                                    </td>
-                                                    <td>
-                                                    </td>
-                                                    <td>
-                                                        <?php echo $row->doc_fname;?> <?php echo $row->doc_lname;?>
-                                                    </td>    
-                                                    <td>
-                                                        <?php echo $row->doc_email;?>
-                                                    </td>
-                                                    <td>
-                                                        <?php echo $row->doc_dept;?>
-                                                    </td>
-                                                    <td>
-                                                        <a href="his_admin_view_single_employee.php?doc_id=<?php echo $row->doc_id;?>&&doc_number=<?php echo $row->doc_number;?>" class="btn btn-xs btn-primary"><i class="mdi mdi-eye"></i> View</a>
-                                                    </td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-                                                </tr>
-                                            </tbody>
-                                            <?php }?>
-                                        </table>
+                                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                            <div class="card bg-info text-white">
+                                                <div class="card-body">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="flex-shrink-0 mr-3">
+                                                            <i class="fas fa-history font-32"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">
+                                                            <h5 class="text-white mb-1">Inventory History</h5>
+                                                            <p class="mb-2" style="opacity: 0.9;">Review stock movements, receipts, and issues</p>
+                                                            <a href="inventory_history.php" class="btn btn-light btn-sm">
+                                                                <i class="fas fa-eye"></i> View Report
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                            <div class="card bg-warning text-white">
+                                                <div class="card-body">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="flex-shrink-0 mr-3">
+                                                            <i class="fas fa-exclamation-triangle font-32"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">
+                                                            <h5 class="text-white mb-1">Low Stock Alerts</h5>
+                                                            <p class="mb-2" style="opacity: 0.9;">Monitor items below reorder level</p>
+                                                            <a href="low_stock_alerts.php" class="btn btn-light btn-sm">
+                                                                <i class="fas fa-eye"></i> View Alerts
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                            <div class="card bg-secondary text-white">
+                                                <div class="card-body">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="flex-shrink-0 mr-3">
+                                                            <i class="fas fa-chart-line font-32"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">
+                                                            <h5 class="text-white mb-1">Usage Charts</h5>
+                                                            <p class="mb-2" style="opacity: 0.9;">Visual analysis of inventory trends</p>
+                                                            <a href="inventory_charts.php" class="btn btn-light btn-sm">
+                                                                <i class="fas fa-eye"></i> View Charts
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                            <div class="card bg-dark text-white">
+                                                <div class="card-body">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="flex-shrink-0 mr-3">
+                                                            <i class="fas fa-car font-32"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">
+                                                            <h5 class="text-white mb-1">Vehicle History</h5>
+                                                            <p class="mb-2" style="opacity: 0.9;">Track vehicle service and maintenance records</p>
+                                                            <a href="vehicle_history.php" class="btn btn-light btn-sm">
+                                                                <i class="fas fa-eye"></i> View History
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div> <!-- end col -->                                                                                                                                                                                                                                         
+                            </div>
                         </div>
-                        <!-- end row -->
+                        <!-- End Reports Section -->
                         
                     </div> <!-- container -->
 

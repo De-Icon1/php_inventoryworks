@@ -3,20 +3,22 @@ session_start();
 include('assets/inc/config.php');
 include('assets/inc/functions.php');
 
-if(isset($_POST['admin_login']))
+// Show a success message after logout redirect
+$success = $success ?? '';
+if(isset($_GET['logged_out'])){
+    $success = "Successfully logged out.";
+}
 
-{
+if(isset($_POST['admin_login'])) {
     $username = trim($_POST['ad_id']);
     $username = str_replace(["\n","\r","\t"], "", $username);
     $username = trim(stripslashes($username));
     $entered_password = trim($_POST['ad_pwd']);
 
     // Fetch user
-    $stmt = $mysqli->prepare("
-        SELECT user_id, username, password, role, full_name 
-        FROM users 
-        WHERE username = ?
-    ");
+    $stmt = $mysqli->prepare(
+        "SELECT user_id, username, password, role, full_name FROM users WHERE username = ?"
+    );
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $stmt->store_result();
@@ -48,6 +50,15 @@ if(isset($_POST['admin_login']))
                 case 'storekeeper':
                     header("Location: store_dashboard.php");
                     break;
+                case 'transport':
+                    header("Location: transport_dashboard.php");
+                    break;
+                case 'vc':
+                    header("Location: vc_dashboard.php");
+                    break;
+                case 'electrical':
+                    header("Location: electrical_dashboard.php");
+                    break;
                 default:
                     header("Location: admin_dashboard.php");
             }
@@ -63,24 +74,29 @@ if(isset($_POST['admin_login']))
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>OOU Works Inventory | Login Portal</title>
+    <title>OOU Directorate of Works | Inventory Management System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="assets/images/oou.png">
 
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/custom-auth.css" rel="stylesheet" type="text/css" />
 
     <script src="assets/js/swal.js"></script>
 
-    <?php if(isset($err)) { ?>
+    <?php if(!empty($err)) { ?>
     <script>
-        setTimeout(function () { swal("Failed", "<?php echo $err;?>", "error"); }, 200);
+        setTimeout(function () { swal("Failed", <?php echo json_encode($err); ?>, "error"); }, 200);
+    </script>
+    <?php } ?>
+    <?php if(!empty($success)) { ?>
+    <script>
+        setTimeout(function () { swal("Success", <?php echo json_encode($success); ?>, "success"); }, 200);
     </script>
     <?php } ?>
 </head>
@@ -99,14 +115,15 @@ if(isset($_POST['admin_login']))
                             <a href="index.php">
                                 <img src="assets/images/OOU.png" alt="" height="46">
                             </a>
-                            <p class="text-muted mb-4 mt-3">Enter your Staff Number and password to continue.</p>
+                            <h4 class="text-dark-50 text-center mt-3 font-weight-bold">OOU Directorate of Works</h4>
+                            <p class="text-muted mb-4 mt-2">Inventory Management System - Enter your credentials to access the system</p>
                         </div>
 
                         <form method="post">
 
                             <div class="form-group mb-3">
-                                <label>Staff Number</label>
-                                <input class="form-control" name="ad_id" type="text" required placeholder="Enter your number">
+                                <label>Staff Number / Username</label>
+                                <input class="form-control" name="ad_id" type="text" required placeholder="Enter your staff number">
                             </div>
 
                             <div class="form-group mb-3">
@@ -115,8 +132,8 @@ if(isset($_POST['admin_login']))
                             </div>
 
                             <div class="form-group mb-0 text-center">
-                                <button name="admin_login" type="submit" class="btn btn-primary">
-                                    Login to Works Inventory
+                                <button name="admin_login" type="submit" class="btn btn-primary btn-block">
+                                    <i class="fas fa-sign-in-alt mr-1"></i> Access Inventory System
                                 </button>
                             </div>
 
@@ -127,7 +144,8 @@ if(isset($_POST['admin_login']))
 
                 <div class="row mt-3">
                     <div class="col-12 text-center">
-                        <p><a href="#" class="text-white-50">Forgot your password?</a></p>
+                        <p class="text-white-50"><small>&copy; Olabisi Onabanjo University - Directorate of Works</small></p>
+                        <p><a href="#" class="text-white-50 ml-1">Need help? Contact OOU ICT Support Team</a></p>
                     </div>
                 </div>
 

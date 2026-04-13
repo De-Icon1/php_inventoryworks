@@ -52,7 +52,7 @@ $role = $_SESSION['role'];
                 <!-- Inventory Section -->
                 <li class="menu-title">Inventory</li>
 
-                <li>
+                <li class="has-submenu">
                     <a href="javascript:void(0);" class="waves-effect">
                         <i class="fe-box"></i>
                         <span> Store Management </span>
@@ -73,7 +73,7 @@ $role = $_SESSION['role'];
                 <!-- Vehicle & Tyre Management -->
                 <li class="menu-title">Vehicles</li>
 
-                <li>
+                <li class="has-submenu">
                     <a href="javascript:void(0);" class="waves-effect">
                         <i class="fe-truck"></i>
                         <span> Vehicle Management </span>
@@ -94,7 +94,7 @@ $role = $_SESSION['role'];
                 <!-- Diesel & Fuel -->
                 <li class="menu-title">Fuel / Diesel</li>
 
-                <li>
+                <li class="has-submenu">
                     <a href="javascript:void(0);" class="waves-effect">
                         <i class="fe-droplet"></i>
                         <span> Diesel Logging </span>
@@ -111,7 +111,7 @@ $role = $_SESSION['role'];
                 <!-- Reports -->
                 <li class="menu-title">Reports</li>
 
-                <li>
+                <li class="has-submenu">
                     <a href="javascript:void(0);" class="waves-effect">
                         <i class="fe-file-text"></i>
                         <span> Inventory Reports </span>
